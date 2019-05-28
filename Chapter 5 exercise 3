@@ -1,0 +1,75 @@
+#include <Servo.h>      //declare servos
+
+Servo servoLeft;        //declares servo left and right through the arduino library
+Servo servoRight;
+
+void setup() {          //setup function
+pinMode(7, INPUT);      //declare pins 7 and 5 as inputs
+pinMode(5, INPUT);
+
+tone(4, 3000, 1000);   //play tone through pin 4, and 3000hz, for 1 second
+delay(1000);
+
+servoLeft.attach(12);   //attach the left servo to pin 12
+servoRight.attach(13);   //attach the right servo to pin 13
+}
+
+void loop()              //loop function
+{
+  byte wLeft = digitalRead(5);   //left sensor is set to pin 5
+  byte wRight = digitalRead(7);  //rigt sensor is set to pin 7
+
+if((wLeft == 0) && (wRight == 0))     //if both the left and right detectors equal 0
+{
+  pause(500);              //delay for 1/2 second
+  servoLeft.detach();      //stop servo left
+  servoRight.detach();     //stop servo right
+}
+else if(wLeft == 0)        //if the left detector is equal to 0
+{
+  pause(500);              //wait 1/2 seconds
+  backward(1000);          //move backwards for 1 second
+  turnRight(400);           //turn rigt for .4 seconds
+}
+else if(wRight == 0)       //if the right detector is equal to 0
+{
+    pause(500);            //wait for 1/2 second
+    backward(1000);        //move backward for 1 second
+    turnLeft(400);         //turn left for.4 seconds
+}
+else
+{
+  forward(20);            //move forward for .02seconds
+}
+}
+
+word pause(int time)                        //variable, delay, variable time
+{
+  servoLeft.writeMicroseconds(1500);        //stop srvo left
+  servoRight.writeMicroseconds(1500);      //stop servo right
+  delay(time);                            //delay for pre-declaired time
+}
+void forward(int time)                    //function move forward for a blank time
+{
+  servoLeft.writeMicroseconds(1700);     //servo left move counterclockwise full speed
+  servoRight.writeMicroseconds(1300);    //servo right move clockwise full speed
+  delay(time);                           //delay for predeclaired time
+}
+void turnLeft(int time)                  //function turn left for determined time
+{
+  servoLeft.writeMicroseconds(1300);     //servo left move clockwise full speed
+  servoRight.writeMicroseconds(1300);    //servo right move counterclockwise full speed
+  delay(time);                           //delay for a determined time
+}
+void turnRight(int time)                //function turn right for declared time
+{
+  servoLeft.writeMicroseconds(1700);    //servo left move counterclockwise full speed
+  servoRight.writeMicroseconds(1700);   //servo right move clockwise full speed
+  delay(time);                          //delay for declared time
+}
+void backward(int time)                 //function move backward
+{
+  servoLeft.writeMicroseconds(1300);    //servo left move clockwise full speed
+  servoRight.writeMicroseconds(1700);   //servo right move counterclockwise full speed
+  delay(time);                          //delay for declared time
+}
